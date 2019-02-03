@@ -17,7 +17,7 @@ class App extends Component {
   render() {
     return (
       <>
-      <TopRow />
+      <TopRow displayValue={this.state.displayValue}/>
       
         <div className='container'>
           <div className='row'>

@@ -5,7 +5,7 @@ const TopRow = props => {
         <>
             <div className='container'>
                 <div className='row'>
-                  <div className='col col-12 top-row'>0</div>
+                  <div className='col col-12 top-row'>{props.displayValue}</div>
                 </div>
             </div>
         </>
