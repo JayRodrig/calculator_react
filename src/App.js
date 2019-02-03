@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
 import TopRow from './components/toprow';
+import ThirdRow from './components/thirdrow';
+import FourthRow from './components/fourthrow';
+import FifthRow from './components/fifthrow';
+import SixthRow from './components/sixthrow';
 import './app.css'
 
 class App extends Component {
@@ -14,6 +18,16 @@ class App extends Component {
     }
   }
 
+  update = val => {
+    if (this.state.displayValue.length >= 9) {
+      alert('Exceeded amount of characters.');
+      return;
+    }
+
+    if (this.state.displayValue === '0') this.setState({displayValue: val});
+    else this.setState({displayValue: this.state.displayValue + val});
+  }
+
   render() {
     return (
       <>
@@ -26,33 +40,10 @@ class App extends Component {
             <div className='col col-3 button'>±</div>
             <div className='col col-3 button orange'>÷</div>
           </div>
-      
-          <div className='row'>
-            <div className='col col-3 button'>7</div>
-            <div className='col col-3 button'>8</div>
-            <div className='col col-3 button'>9</div>
-            <div className='col col-3 button orange'>x</div>
-          </div>
-      
-          <div className='row'>
-            <div className='col col-3 button'>4</div>
-            <div className='col col-3 button'>5</div>
-            <div className='col col-3 button'>6</div>
-            <div className='col col-3 button orange'>-</div>
-          </div>
-      
-          <div className='row'>
-            <div className='col col-3 button'>1</div>
-            <div className='col col-3 button'>2</div>
-            <div className='col col-3 button'>3</div>
-            <div className='col col-3 button orange'>+</div>
-          </div>
-      
-          <div className='row'>
-            <div className='col col-6 button'>0</div>
-            <div className='col col button'>.</div>
-            <div className='col col button orange'>=</div>
-          </div>
+          <ThirdRow displayValue={this.state.displayValue} operation={this.state.operation} update={this.update} />
+          <FourthRow displayValue={this.state.displayValue} operation={this.state.operation} update={this.update} />
+          <FifthRow displayValue={this.state.displayValue} operation={this.state.operation} update={this.update} />
+          <SixthRow displayValue={this.state.displayValue} operation={this.state.operation} update={this.update} />
         </div>
       </>
     );
