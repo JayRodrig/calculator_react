@@ -20,10 +20,10 @@ class App extends Component {
 
   update = val => {
     if (this.state.displayValue.length >= 9) {
-      alert('Exceeded amount of characters.');
       return;
     }
     if (this.state.displayValue === '0') this.setState({displayValue: val});
+    else if(this.state.operation) this.setState({displayValue: val});
     else this.setState({displayValue: this.state.displayValue + val});
   }
 
@@ -33,14 +33,16 @@ class App extends Component {
         operation: 'x',
         waitingForNewValue: true,
         previousValue: this.state.displayValue,
-        displayValue: '0',
       });
     }
 
-    if (operator === '=') {
+    else if (operator === '=') {
       const {previousValue, operation, displayValue} = this.state;
       const operationFuncs = {
         x: function(a, b) { return a * b },
+        plus: function(a, b) { return a + b },
+        minus: function(a, b) { return a - b},
+        divided: function(a, b) { return a / b},
       }
       this.setState({
         displayValue: operationFuncs[operation](previousValue, displayValue),
