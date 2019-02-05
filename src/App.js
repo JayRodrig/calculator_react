@@ -22,15 +22,28 @@ class App extends Component {
     if (this.state.displayValue.length >= 9) {
       return;
     }
-    if (this.state.displayValue === '0') this.setState({displayValue: val});
-    else if(this.state.operation) this.setState({displayValue: val});
-    else this.setState({displayValue: this.state.displayValue + val});
+    if (this.state.displayValue === '0') 
+      this.setState({displayValue: val});
+    else if (this.state.waitingForNewValue && this.state.displayValue === val) 
+      this.setState({displayValue: val, waitingForNewValue: false,})
+    else if (this.state.waitingForNewValue && this.state.displayValue !== val) 
+      this.setState({displayValue: val, waitingForNewValue: false,})
+    else 
+      this.setState({displayValue: this.state.displayValue + val});
   }
 
   updateOperations = operator => {
     if (operator === 'x') {
       this.setState({
-        operation: 'x',
+        operation: 'multiplied',
+        waitingForNewValue: true,
+        previousValue: this.state.displayValue,
+      });
+    }
+
+    if (operator === '-') {
+      this.setState({
+        operation: 'minus',
         waitingForNewValue: true,
         previousValue: this.state.displayValue,
       });
@@ -39,7 +52,7 @@ class App extends Component {
     else if (operator === '=') {
       const {previousValue, operation, displayValue} = this.state;
       const operationFuncs = {
-        x: function(a, b) { return a * b },
+        multiplied: function(a, b) { return a * b },
         plus: function(a, b) { return a + b },
         minus: function(a, b) { return a - b},
         divided: function(a, b) { return a / b},
@@ -65,7 +78,7 @@ class App extends Component {
           <ThirdRow displayValue={this.state.displayValue} operation={this.state.operation} 
           update={this.update} updateOperations={this.updateOperations}/>
           <FourthRow displayValue={this.state.displayValue} operation={this.state.operation} 
-          update={this.update} />
+          update={this.update} updateOperations={this.updateOperations} />
           <FifthRow displayValue={this.state.displayValue} operation={this.state.operation} 
           update={this.update} />
           <SixthRow displayValue={this.state.displayValue} operation={this.state.operation} 
