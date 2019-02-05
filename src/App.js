@@ -33,6 +33,14 @@ class App extends Component {
   }
 
   updateOperations = operator => {
+    if (operator === '+'){
+      this.setState({
+        operation: 'plus',
+        waitingForNewValue: true,
+        previousValue: this.state.displayValue,
+      });
+    }
+
     if (operator === 'x') {
       this.setState({
         operation: 'multiplied',
@@ -53,7 +61,7 @@ class App extends Component {
       const {previousValue, operation, displayValue} = this.state;
       const operationFuncs = {
         multiplied: function(a, b) { return a * b },
-        plus: function(a, b) { return a + b },
+        plus: function(a, b) { return parseInt(a) + parseInt(b) },
         minus: function(a, b) { return a - b},
         divided: function(a, b) { return a / b},
       }
@@ -80,7 +88,7 @@ class App extends Component {
           <FourthRow displayValue={this.state.displayValue} operation={this.state.operation} 
           update={this.update} updateOperations={this.updateOperations} />
           <FifthRow displayValue={this.state.displayValue} operation={this.state.operation} 
-          update={this.update} />
+          update={this.update} updateOperations={this.updateOperations}/>
           <SixthRow displayValue={this.state.displayValue} operation={this.state.operation} 
           update={this.update} updateOperations={this.updateOperations}/>
         </div>
