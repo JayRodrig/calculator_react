@@ -4,7 +4,7 @@ import ThirdRow from './components/thirdrow';
 import FourthRow from './components/fourthrow';
 import FifthRow from './components/fifthrow';
 import SixthRow from './components/sixthrow';
-import './app.css'
+import './App.css'
 
 class App extends Component {
   constructor(props) {
