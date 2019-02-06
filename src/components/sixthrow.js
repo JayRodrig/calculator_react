@@ -16,7 +16,7 @@ const SixthRow = props => {
         <>    
             <div className='row'>
                 <div className='col col-6 button' onClick={clickHandler}>0</div>
-                <div className='col col button'>.</div>
+                <div className='col col button' onClick={clickHandler}>.</div>
                 <div className='col col button orange' onClick={operationHandler}>=</div>
             </div>
         </>    
