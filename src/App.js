@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import TopRow from './components/toprow';
+import SecondRow from './components/secondrow';
 import ThirdRow from './components/thirdrow';
 import FourthRow from './components/fourthrow';
 import FifthRow from './components/fifthrow';
@@ -56,12 +57,35 @@ class App extends Component {
         previousValue: this.state.displayValue,
       });
     }
+    if (operator === '%') {
+      this.setState({
+        operation: 'percent',
+        waitingForNewValue: false,
+        previousValue: this.state.displayValue,
+        displayValue: this.state.displayValue / 100,
+      })
+    }
+    if (operator === '±') {
+      this.setState({
+        operation: 'opposite',
+        waitingForNewValue: false,
+        previousValue: this.state.displayValue,
+        displayValue: this.state.displayValue * (-1),
+      })
+    }
+    if (operator === '÷') {
+      this.setState({
+        operation: 'divided',
+        waitingForNewValue: true,
+        previousValue: this.state.displayValue,
+      })
+    }
 
     else if (operator === '=') {
       const {previousValue, operation, displayValue} = this.state;
       const operationFuncs = {
         multiplied: function(a, b) { return a * b },
-        plus: function(a, b) { return parseInt(a) + parseInt(b) },
+        plus: function(a, b) { return parseFloat(a) + parseFloat(b) },
         minus: function(a, b) { return a - b},
         divided: function(a, b) { return a / b},
       }
@@ -74,15 +98,9 @@ class App extends Component {
   render() {
     return (
       <>
-      <TopRow displayValue={this.state.displayValue}/>
-      
+        <TopRow displayValue={this.state.displayValue}/>
         <div className='container'>
-          <div className='row'>
-            <div className='col col-3 button'>AC</div>
-            <div className='col col-3 button'>%</div>
-            <div className='col col-3 button'>±</div>
-            <div className='col col-3 button orange'>÷</div>
-          </div>
+          <SecondRow updateOperations={this.updateOperations}/>
           <ThirdRow displayValue={this.state.displayValue} operation={this.state.operation} 
           update={this.update} updateOperations={this.updateOperations}/>
           <FourthRow displayValue={this.state.displayValue} operation={this.state.operation} 
