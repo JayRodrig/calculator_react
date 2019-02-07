@@ -15,22 +15,24 @@ class App extends Component {
       displayValue: '0',
       previousValue: null,
       operation: null,
-      waitingForNewValue: false
+      waitingForNewValue: false,
     }
   }
 
   update = val => {
     if (this.state.displayValue.length >= 9) {
       return;
+    } else if (val === 'AC') {
+      this.setState({displayValue: '0',});
+    } else if (this.state.displayValue === '0') {
+      this.setState({displayValue: val,});
+    } else if (this.state.waitingForNewValue && this.state.displayValue === val) {
+      this.setState({displayValue: val, waitingForNewValue: false,});
+    } else if (this.state.waitingForNewValue && this.state.displayValue !== val) {
+      this.setState({displayValue: val, waitingForNewValue: false,});
+    } else { 
+      this.setState({displayValue: this.state.displayValue + val,});
     }
-    if (this.state.displayValue === '0') 
-      this.setState({displayValue: val});
-    else if (this.state.waitingForNewValue && this.state.displayValue === val) 
-      this.setState({displayValue: val, waitingForNewValue: false,})
-    else if (this.state.waitingForNewValue && this.state.displayValue !== val) 
-      this.setState({displayValue: val, waitingForNewValue: false,})
-    else 
-      this.setState({displayValue: this.state.displayValue + val});
   }
 
   updateOperations = operator => {
@@ -40,58 +42,46 @@ class App extends Component {
         waitingForNewValue: true,
         previousValue: this.state.displayValue,
       });
-    }
-
-    if (operator === 'x') {
+    } else if (operator === 'x') {
       this.setState({
         operation: 'multiplied',
         waitingForNewValue: true,
         previousValue: this.state.displayValue,
       });
-    }
-
-    if (operator === '-') {
+    } else if (operator === '-') {
       this.setState({
         operation: 'minus',
         waitingForNewValue: true,
         previousValue: this.state.displayValue,
       });
-    }
-    if (operator === '%') {
+    } else if (operator === '%') {
       this.setState({
-        operation: 'percent',
         waitingForNewValue: false,
         previousValue: this.state.displayValue,
         displayValue: this.state.displayValue / 100,
-      })
-    }
-    if (operator === '±') {
+      });
+    } else if (operator === '±') {
       this.setState({
-        operation: 'opposite',
         waitingForNewValue: false,
-        previousValue: this.state.displayValue,
         displayValue: this.state.displayValue * (-1),
       })
-    }
-    if (operator === '÷') {
+    } else if (operator === '÷') {
       this.setState({
         operation: 'divided',
         waitingForNewValue: true,
         previousValue: this.state.displayValue,
-      })
-    }
-
-    else if (operator === '=') {
+      });
+    } else if (operator === '=') {
       const {previousValue, operation, displayValue} = this.state;
       const operationFuncs = {
-        multiplied: function(a, b) { return a * b },
+        multiplied: function(a, b) { return parseFloat(a) * parseFloat(b) },
         plus: function(a, b) { return parseFloat(a) + parseFloat(b) },
         minus: function(a, b) { return a - b},
         divided: function(a, b) { return a / b},
       }
       this.setState({
         displayValue: operationFuncs[operation](previousValue, displayValue),
-      })
+      });
     }
   }
 
@@ -100,7 +90,7 @@ class App extends Component {
       <>
         <TopRow displayValue={this.state.displayValue}/>
         <div className='container'>
-          <SecondRow updateOperations={this.updateOperations}/>
+          <SecondRow update={this.update} updateOperations={this.updateOperations}/>
           <ThirdRow displayValue={this.state.displayValue} operation={this.state.operation} 
           update={this.update} updateOperations={this.updateOperations}/>
           <FourthRow displayValue={this.state.displayValue} operation={this.state.operation} 
