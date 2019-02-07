@@ -15,7 +15,10 @@ const SecondRow = props => {
     return (
         <>    
             <div className='row'>
-                <div className='col col-3 button' onClick={clickHandler}>AC</div>
+                {
+                    (props.operation) ? <div className='col col-3 button' onClick={clickHandler}>C</div> 
+                        : <div className='col col-3 button' onClick={clickHandler}>AC</div> 
+                }
                 <div className='col col-3 button' onClick={operationHandler}>%</div>
                 <div className='col col-3 button' onClick={operationHandler}>±</div>
                 <div className='col col-3 button orange' onClick={operationHandler}>÷</div>
