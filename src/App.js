@@ -44,12 +44,32 @@ class App extends Component {
       minus: function(a, b) { return parseFloat(a) - parseFloat(b)},
       divided: function(a, b) { return parseFloat(a) / parseFloat(b)},
     }
-
-    // if (this.state.displayValue && this.state.operation && this.state.previousValue 
-    //   && (operator === 'x' || operator === '-' || operator === '+' || operator === '÷')) {
-    //   this.setState({displayValue: operationFuncs[operation](previousValue, displayValue)});
-    // }
-    if (operator === '+'){
+    
+    if (operator === '+' && !this.state.waitingForNewValue && this.state.displayValue && this.state.previousValue) {
+      this.setState({
+        displayValue: operationFuncs[operation](previousValue, displayValue),
+        previousValue: operationFuncs[operation](previousValue, displayValue),
+        waitingForNewValue: true,
+      })
+    } else if (operator === '-' && !this.state.waitingForNewValue && this.state.displayValue && this.state.previousValue) {
+      this.setState({
+        displayValue: operationFuncs[operation](previousValue, displayValue),
+        previousValue: operationFuncs[operation](previousValue, displayValue),
+        waitingForNewValue: true,
+      })
+    } else if (operator === 'x' && !this.state.waitingForNewValue && this.state.displayValue && this.state.previousValue) {
+      this.setState({
+        displayValue: operationFuncs[operation](previousValue, displayValue),
+        previousValue: operationFuncs[operation](previousValue, displayValue),
+        waitingForNewValue: true,
+      })
+    } else if (operator === '÷' && !this.state.waitingForNewValue && this.state.displayValue && this.state.previousValue) {
+      this.setState({
+        displayValue: operationFuncs[operation](previousValue, displayValue),
+        previousValue: operationFuncs[operation](previousValue, displayValue),
+        waitingForNewValue: true,
+      })
+    } else if (operator === '+'){
       this.setState({
         operation: 'plus',
         waitingForNewValue: true,
@@ -70,7 +90,6 @@ class App extends Component {
     } else if (operator === '%') {
       this.setState({
         waitingForNewValue: false,
-        previousValue: this.state.displayValue,
         displayValue: this.state.displayValue / 100,
       });
     } else if (operator === '±') {
@@ -88,6 +107,7 @@ class App extends Component {
       this.setState({
         displayValue: operationFuncs[operation](previousValue, displayValue),
       });
+      console.log(this.state);
     }
   }
 
